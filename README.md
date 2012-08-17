@@ -3,7 +3,6 @@ Coding for learning and thinking.
 
 ## Focus on the following languages:
 * AWK
-* Bash
 * C
 * C++
 * C#
@@ -12,4 +11,5 @@ Coding for learning and thinking.
 * Lua
 * Python
 * Ruby
+* Shell
 * XML
