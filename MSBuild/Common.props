@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    InitialTargets="PrepareTest"
+    DefaultTargets="Test">
+  <PropertyGroup>
+    <MSBuildTasks-Assembly Condition="'$(MSBuildTasks-Assembly)' == ''">$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll</MSBuildTasks-Assembly>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TestName>$(MSBuildProjectName)</TestName>
+    <Test-BaseDir>$(MSBuildThisFileDirectory)\</Test-BaseDir>
+    <Test-FixtureDir>$(MSBuildProjectDirectory)\</Test-FixtureDir>
+    <Test-TargetDir>$(Test-BaseDir)\target\</Test-TargetDir>
+    <Test-ResultDir>$(Test-TargetDir)\$([System.IO.Directory]::GetParent($(MSBuildProjectFullPath)).Name)\$(TestName)\</Test-ResultDir>
+    <Test-SrcDir>$(Test-FixtureDir)\src</Test-SrcDir>
+    <Test-BinDir>$(Test-ResultDir)\bin\</Test-BinDir>
+  </PropertyGroup>
+  
+  <Target Name="BeforeTest" BeforeTargets="Test">
+    <Message Text="Starting $(TestName) test..." />
+  </Target>
+  
+  <Target Name="AfterTest" AfterTargets="Test">
+    <Message Text="$(TestName) successful." />
+  </Target>
+  
+  
+  <!-- Initialize targets -->
+  <Target Name="PrepareTest">
+    <RemoveDir Condition="Exists($(Test-ResultDir))" Directories="$(Test-ResultDir)" />
+    <MakeDir Directories="$(Test-ResultDir);$(Test-BinDir)" />
+    
+    <Error Code="100" Condition="'$(TestName)' != '$(MSBuildProjectName)'"
+      Text="TestName '$(TestName)' not matched file name '$(MSBuildProjectName)'." />
+  </Target>
+</Project>

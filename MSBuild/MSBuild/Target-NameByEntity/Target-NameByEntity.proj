@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TestFixture [
+  <!ENTITY DefaultTarget "Test">
+]>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    DefaultTargets="&DefaultTarget;">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <Target Name="&DefaultTarget;">
+    <Message Text="Do Nothing!" />
+  </Target>
+</Project>

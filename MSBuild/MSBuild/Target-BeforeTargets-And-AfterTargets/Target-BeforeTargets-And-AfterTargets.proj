@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <Target Name="BeforeAction" BeforeTargets="Test">
+    <PropertyGroup>
+      <BeforeValue>True</BeforeValue>
+    </PropertyGroup>
+    <Message Text="BeforeValue = $(BeforeValue)" />
+  </Target>
+  
+  <Target Name="AfterAction" AfterTargets="Test">
+    <PropertyGroup>
+      <AfterValue>True</AfterValue>
+    </PropertyGroup>
+    <Message Text="AfterValue = $(AfterValue)" />
+  </Target>
+  
+  <Target Name="Test">
+    <Error Condition="$(BeforeValue) != True" Text="Invalid status." Code="1" />
+    <Error Condition="$(AfterValue) == True" Text="Invalid status." Code="1" />
+  </Target>
+</Project>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <PropertyGroup>
+    <SpecTargets>
+      Initialize;
+      Spec-PropertyFromDefine;
+      Spec-PropertyFromFunction;
+      Spec-PropertyFromEnvironmentVariable;
+      Spec-PropertyFromReserved;
+      Spec-PropertyFromRegistry;
+      Spec-PropertyFromRuntime;
+    </SpecTargets>
+  </PropertyGroup>
+  
+  <Target Name="Initialize">
+    <GetEnvironmentInfo>
+      <Output TaskParameter="Is64BitOperatingSystem" PropertyName="Is64BitOS" />
+    </GetEnvironmentInfo>
+  </Target>
+  
+  <Target Name="Test" DependsOnTargets="$(SpecTargets)">
+  </Target>
+  
+  <Target Name="Spec-PropertyFromDefine">
+    <PropertyGroup>
+      <DefineValue>GoMan</DefineValue>
+    </PropertyGroup>
+    <Error Condition="'$(DefineValue)' != 'GoMan'" Text="Spec-PropertyFromDefine FAILED" Code="1" />
+    <Message Text="Spec-PropertyFromDefine PASS." />
+  </Target>
+  
+  <Target Name="Spec-PropertyFromFunction">
+    <PropertyGroup>
+      <FunctionValue>$([System.String]::Format('Hello {0}.', 'WTF'))</FunctionValue>
+    </PropertyGroup>
+    <PropertyGroup>
+      <NestedFunctionValue>Hello WTF.</NestedFunctionValue>
+      <NestedFunctionValue>$([System.String]::Format('Nested {0}', $(NestedFunctionValue)))</NestedFunctionValue>
+    </PropertyGroup>
+    <Error Condition="'$(FunctionValue)' != 'Hello WTF.'" Code="2" />
+    <Error Condition="'$(NestedFunctionValue)' != 'Nested Hello WTF.'" Code="2" />
+    
+    <Message Text="Spec-PropertyFromFunction PASS." />
+  </Target>
+  
+  <Target Name="Spec-PropertyFromEnvironmentVariable">
+    <Error Condition="'$(Path)' == ''" Text="Spec-PropertyFromEnvironmentVariable FAILED" Code="2" />
+    <Message Text="Spec-PropertyFromEnvironmentVariable PASS." />
+  </Target>
+  
+  <Target Name="Spec-PropertyFromReserved">
+    <!-- FOR Basic -->
+    <Error Condition="'$(MSBuildStartupDirectory)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+    <Error Condition="'$(MSBuildBinPath)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+    <Error Condition="'$(MSBuildToolsVersion)' == '' OR '$(MSBuildToolsPath)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+    
+    <!-- FOR ExtensionsPath -->
+    <Error Condition="'$(MSBuildExtensionsPath)' == ''
+        OR '$(MSBuildExtensionsPath32)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+    <Error Condition="$(Is64BitOS) == True AND '$(MSBuildExtensionsPath64)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+     
+     <!-- FOR Project -->
+    <Error Condition="'$(MSBuildProjectDirectory)' == ''
+        OR '$(MSBuildProjectDirectoryNoRoot)' == ''
+        OR '$(MSBuildProjectFile)' == ''
+        OR '$(MSBuildProjectExtension)' == ''
+        OR '$(MSBuildProjectFullPath)' == ''
+        OR '$(MSBuildProjectName)' == ''
+        OR '$(MSBuildProjectDefaultTargets)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+      
+    <Error Condition="'$(MSBuildThisFileDirectory)' == ''
+        OR '$(MSBuildThisFileDirectoryNoRoot)' == ''
+        OR '$(MSBuildThisFile)' == ''
+        OR '$(MSBuildThisFileExtension)' == ''
+        OR '$(MSBuildThisFileFullPath)' == ''
+        OR '$(MSBuildThisFileName)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+    
+    <!-- FOR Other -->
+    <Message Text=
+"MSBuildNodeCount = $(MSBuildNodeCount)
+MSBuildLastTaskResult = $(MSBuildLastTaskResult)
+MSBuildProgramFiles32 = $(MSBuildProgramFiles32)" />
+    <Error Condition="'$(MSBuildNodeCount)' == ''
+        OR '$(MSBuildLastTaskResult)' == ''
+        OR '$(MSBuildProgramFiles32)' == ''"
+      Text="Spec-PropertyFromReserved FAILED" Code="2" />
+    
+    <Message Text="Spec-PropertyFromReserved PASS." />
+  </Target>
+  
+  <Target Name="Spec-PropertyFromRuntime">
+    <Error Condition="'$(MSBuildRuntimeVersion)' != '4.0.30319'" Code="2" />
+    
+    <Message Text="Spec-PropertyFromRuntime PASS." />
+  </Target>
+  
+  <Target Name="Spec-PropertyFromRegistry">
+    <Error
+      Condition="'$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion@ProductName)' == ''"
+      Code="2" />
+    
+    <Message Text="Spec-PropertyFromRegistry PASS." />
+  </Target>
+  
+  
+  <UsingTask
+      TaskName="GetEnvironmentInfo"
+      TaskFactory="CodeTaskFactory"
+      AssemblyFile="$(MSBuildTasks-Assembly)" >
+    <ParameterGroup>
+      <Is64BitOperatingSystem ParameterType="System.Boolean" Output="True" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Code Type="Fragment" Language="cs">
+      <![CDATA[
+Is64BitOperatingSystem = System.Environment.Is64BitOperatingSystem;
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

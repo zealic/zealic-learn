@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <PropertyGroup>
+    <TouchFile>$(Test-FixtureDir)\TouchMe.txt</TouchFile>
+    <ResultFile>$(Test-ResultDir)\Result.txt</ResultFile>
+  </PropertyGroup>
+  
+  <Target Name="Test" DependsOnTargets="
+      Prepare-Touch;TestCore;Verify-Touch;
+      Prepare-Untouch;TestCore;Verify-Untouch">
+  </Target>
+  
+  <Target Name="Prepare-Touch">
+    <Delete Files="$(ResultFile)" />
+    <Touch Files="$(TouchFile)" />
+  </Target>
+  
+  <Target Name="Prepare-Untouch">
+    <Delete Files="$(ResultFile)" />
+    <Touch Files="$(TouchFile)" Time="1999-07-01 00:00:00" />
+  </Target>
+  
+  <Target Name="TestCore" Inputs="$(TouchFile)" Outputs="$(ResultFile)">
+    <Touch AlwaysCreate="True" Files="$(ResultFile)" />
+  </Target>
+  
+  <Target Name="Verify-Touch">
+    <Error Condition="!Exists($(ResultFile))" Text="Invalid status." />
+  </Target>
+  
+  <Target Name="Verify-Untouch">
+    <Error Condition="Exists($(ResultFile))" Text="Invalid status." />
+  </Target>
+</Project>

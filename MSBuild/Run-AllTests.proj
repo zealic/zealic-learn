@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    DefaultTargets="Build">
+  <PropertyGroup>
+    <TargetDir>$(MSBuildProjectDirectory)\target\</TargetDir>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectToBuild Include="
+      $(MSBuildProjectDirectory)\MSBuild\*\*.proj;" />
+  </ItemGroup>
+  
+  <Target Name="Clean">
+    <RemoveDir Directories="$(TargetDir)" />
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild BuildInParallel="True" Projects="@(ProjectToBuild)" StopOnFirstFailure="True"
+      Properties="
+        Test-PropsFile=$(MSBuildProjectDirectory)\Common.props;" />
+  </Target>
+</Project>

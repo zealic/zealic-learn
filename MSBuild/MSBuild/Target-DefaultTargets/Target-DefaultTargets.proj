@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    DefaultTargets="Prepare;Test">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <Target Name="Prepare">
+    <PropertyGroup>
+      <HasPrepared>True</HasPrepared>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="Test">
+    <Error Condition="$(HasPrepared) != True" Text="Build not prepared." Code="1" />
+  </Target>
+</Project>

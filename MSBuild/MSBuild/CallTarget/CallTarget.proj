@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <PropertyGroup>
+    <DefinedValue>True</DefinedValue>
+  </PropertyGroup>
+  
+  <Target Name="Test">
+    <CallTarget Targets="MyTarget">
+      <Output TaskParameter="TargetOutputs" PropertyName="MyTargetOutputValue" />
+    </CallTarget>
+    <Error Condition="$(IsolationCalled) == True" Text="Invalid status." Code="1" />
+    <Error Condition="$(MyTargetOutputValue) != True" Text="MyTargetOutputValue no value." Code="1" />
+  </Target>
+  
+  <Target Name="MyTarget" Outputs="$(MyTargetOutputValue)" >
+    <PropertyGroup>
+      <IsolationCalled>True</IsolationCalled>
+      <MyTargetOutputValue>True</MyTargetOutputValue>
+    </PropertyGroup>
+    <Error Condition="$(DefinedValue) != True" Text="DefinedValue no value." Code="1" />
+  </Target>
+</Project>

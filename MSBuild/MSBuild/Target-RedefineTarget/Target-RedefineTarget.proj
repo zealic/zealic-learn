@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <Target Name="Test">
+    <PropertyGroup>
+      <UnexpectedValue>True</UnexpectedValue>
+    </PropertyGroup>
+  </Target>
+  
+  <Target Name="Test">
+    <Message Text="Test is running..." />
+    <Error Condition="$(UnexpectedValue) == True" Text="UnexpectedValue has exists." Code="1" />
+  </Target>
+</Project>

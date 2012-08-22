@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(Test-PropsFile)" />
+  
+  <PropertyGroup>
+    <FactAssembly>$(Test-BinDir)\FactAssembly.dll</FactAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <FactSources Include="$(Test-SrcDir)\*.cs" />
+  </ItemGroup>
+  
+  <UsingTask TaskName="Hello" AssemblyFile="$(FactAssembly)" />
+  
+  <Target Name="MakeAssembly">
+    <Csc Sources="@(FactSources)" TargetType="Library" OutputAssembly="$(FactAssembly)"
+      References="Microsoft.Build.Framework.dll;Microsoft.Build.Utilities.v4.0.dll" />
+  </Target>
+  
+  <Target Name="Test" DependsOnTargets="MakeAssembly">
+    <Hello />
+  </Target>
+</Project>
