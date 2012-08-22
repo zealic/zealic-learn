@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Draw Line</title>
+  <script src="../jquery.min.js"></script>
+  <script type="text/javascript">
+var CANVAS_WIDTH = 800;
+var CANVAS_HEIGHT = 600;
+var drawing = false;
+var drawLock = 0;
+var bufferedImgData;
+var origX, origY;
+
+$(function() {;
+  var canvas  = $("#myCanvas")[0];
+  var ctx = canvas.getContext("2d");
+  
+  function drawLine(targetX, targetY) {
+    ctx.beginPath();
+    ctx.moveTo(origX, origY);
+    ctx.lineTo(targetX, targetY);
+    ctx.stroke();
+  }
+  
+  function reset() {
+    ctx.fillStyle="#FF0000";
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    if(bufferedImgData)
+      ctx.putImageData(bufferedImgData, 0, 0);
+  }
+  
+  $(canvas).mousedown(function (event) {
+    if(drawing) return;
+    drawing = true;
+    bufferedImgData = ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    origX = event.offsetX;
+    origY = event.offsetY;
+    console.log("Mouse down!");
+  });
+  
+  $(canvas).mouseup(function (event) {
+    if(!drawing) return;
+    drawing = false;
+    reset();
+    ctx.putImageData(bufferedImgData, 0, 0);
+      drawLine(event.offsetX, event.offsetY);
+    console.log("Mouse up!");
+  });
+  
+  $(canvas).mousemove(function (event) {
+    drawLock++;
+    if(drawing && drawLock == 1) {
+      reset();
+      ctx.putImageData(bufferedImgData, 0, 0);
+      drawLine(event.offsetX, event.offsetY);
+    }
+    drawLock--;
+  });
+  
+  reset();
+});
+  </script>
+  </head>
+  <body>
+    <div style="width: 800; margin: 0 auto">
+      <canvas id="myCanvas" width="800" height="600"></canvas>
+    </div>
+  </body>
+</html>
