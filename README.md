@@ -1,6 +1,7 @@
 # Zealic Learn
 Coding for learning and thinking.
 
+----
 ## Focus on the following languages:
 * AWK
 * C
@@ -13,3 +14,9 @@ Coding for learning and thinking.
 * Ruby
 * Shell
 * XML
+
+## Focus on the following Build Automation tools:
+* Ant
+* CMake
+* Gradle
+* MSBuild
