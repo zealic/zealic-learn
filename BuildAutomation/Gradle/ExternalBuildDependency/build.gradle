@@ -1,0 +1,25 @@
+/*---
+- title: 'Feature : External Build Dependency'
+- category: ['Gradle']
+- references: {
+    'Organizing Build Logic - External Build Dependency': 'http://gradle.org/docs/current/userguide/organizing_build_logic.html#externalBuildDependency'
+  }
+---*/
+defaultTasks 'encode'
+
+description = 'Gradle External Build Dependency'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'commons-codec', name: 'commons-codec', version: '1.2'
+    }
+}
+
+import org.apache.commons.codec.binary.Base64
+task encode << {
+    def byte[] encodedString = new Base64().encode('Hello World!\n'.getBytes())
+    println new String(encodedString)
+}
