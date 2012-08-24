@@ -1,3 +1,10 @@
+/*---
+- title: 'Win32 API : Waitable Timer Objects'
+- category: ['C++', 'Windows']
+- references: {
+    'MSDN - Waitable Timer Objects': 'http://msdn.microsoft.com/en-us/library/windows/desktop/ms687012.aspx'
+  }
+---*/
 #include <windows.h>
 #include <iostream>
 
