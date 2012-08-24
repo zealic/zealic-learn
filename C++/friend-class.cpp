@@ -1,3 +1,10 @@
+/*---
+- title: 'Feature : Friend Class'
+- category: ['C++']
+- references: {
+    'Friendship and inheritance - Friend Class': 'http://www.cplusplus.com/doc/tutorial/inheritance/#friend_class'
+  }
+---*/
 #include <iostream>
 
 class Depot;
