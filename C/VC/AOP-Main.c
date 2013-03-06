@@ -7,6 +7,8 @@
 ---*/
 #include <windows.h>
 
+#pragma comment(lib, "user32.lib")
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
 {
    MessageBox(NULL, TEXT("Hello, Main Program!"), TEXT("Hello"), 0);
