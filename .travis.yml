@@ -6,4 +6,5 @@ node_js:
   - 0.10
 
 script:
+  - ./BuildAutomation/ci-build.sh
   - ./NodeJS/ci-build.sh
