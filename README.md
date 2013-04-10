@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zealic/zealic-learn.png)](https://travis-ci.org/zealic/zealic-learn)
+
 # Zealic Learn
 Coding for learning and thinking.
 
