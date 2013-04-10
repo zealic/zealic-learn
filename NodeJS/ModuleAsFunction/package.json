@@ -1,0 +1,6 @@
+{
+  "name": "ModuleAsFunction",
+  "scripts": {
+    "test": "node ./run"
+  }
+}
